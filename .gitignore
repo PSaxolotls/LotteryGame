@@ -97,3 +97,281 @@ InitTestScene*.unity*
 
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
+LotteryGameV0.1/LotteryGame.exe
+LotteryGameV0.1/D3D12/D3D12Core.dll
+LotteryGameV0.1/LotteryGame_BurstDebugInformation_DoNotShip/Data/Plugins/x86_64/lib_burst_generated.txt
+LotteryGameV0.1/LotteryGame_Data/app.info
+LotteryGameV0.1/LotteryGame_Data/boot.config
+LotteryGameV0.1/LotteryGame_Data/globalgamemanagers
+LotteryGameV0.1/LotteryGame_Data/globalgamemanagers.assets
+LotteryGameV0.1/LotteryGame_Data/globalgamemanagers.assets.resS
+LotteryGameV0.1/LotteryGame_Data/level0
+LotteryGameV0.1/LotteryGame_Data/resources.assets
+LotteryGameV0.1/LotteryGame_Data/resources.assets.resS
+LotteryGameV0.1/LotteryGame_Data/ScriptingAssemblies.json
+LotteryGameV0.1/LotteryGame_Data/sharedassets0.assets
+LotteryGameV0.1/LotteryGame_Data/sharedassets0.assets.resS
+LotteryGameV0.1/LotteryGame_Data/Managed/Mono.Security.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/System.ComponentModel.Composition.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/System.Configuration.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/System.Core.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/System.Data.DataSetExtensions.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/System.Data.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/System.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/System.Drawing.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/System.EnterpriseServices.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/System.IO.Compression.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/System.IO.Compression.FileSystem.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/System.Net.Http.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/System.Numerics.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/System.Runtime.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/System.Runtime.Serialization.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/System.Security.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/System.ServiceModel.Internals.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/System.Transactions.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/System.Xml.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/System.Xml.Linq.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/Unity.2D.Animation.Runtime.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/Unity.2D.Common.Runtime.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/Unity.2D.IK.Runtime.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/Unity.2D.PixelPerfect.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/Unity.2D.SpriteShape.Runtime.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/Unity.2D.Tilemap.Extras.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/Unity.Burst.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/Unity.Burst.Unsafe.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/Unity.Collections.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/Unity.Collections.LowLevel.ILSupport.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/Unity.InputSystem.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/Unity.InputSystem.ForUI.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/Unity.InternalAPIEngineBridge.001.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/Unity.Mathematics.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/Unity.Multiplayer.Center.Common.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/Unity.Rendering.LightTransport.Runtime.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/Unity.RenderPipeline.Universal.ShaderLibrary.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/Unity.RenderPipelines.Core.Runtime.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/Unity.RenderPipelines.Core.Runtime.Shared.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/Unity.RenderPipelines.Core.ShaderLibrary.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/Unity.RenderPipelines.GPUDriven.Runtime.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/Unity.RenderPipelines.Universal.2D.Runtime.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/Unity.RenderPipelines.Universal.Config.Runtime.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/Unity.RenderPipelines.Universal.Runtime.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/Unity.RenderPipelines.Universal.Shaders.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/Unity.TextMeshPro.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/Unity.Timeline.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/Unity.VisualScripting.Antlr3.Runtime.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/Unity.VisualScripting.Core.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/Unity.VisualScripting.Flow.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/Unity.VisualScripting.State.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.AccessibilityModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.AIModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.AMDModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.AndroidJNIModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.AnimationModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.ARModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.AssetBundleModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.AudioModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.ClothModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.ClusterInputModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.ClusterRendererModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.ContentLoadModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.CoreModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.CrashReportingModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.DirectorModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.DSPGraphModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.GameCenterModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.GIModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.GraphicsStateCollectionSerializerModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.GridModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.HierarchyCoreModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.HotReloadModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.ImageConversionModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.IMGUIModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.InputForUIModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.InputLegacyModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.InputModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.JSONSerializeModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.LocalizationModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.MarshallingModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.MultiplayerModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.NVIDIAModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.ParticleSystemModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.PerformanceReportingModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.TextCoreTextEngineModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.TextRenderingModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.TilemapModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.UI.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.UIElementsModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.UIModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.UmbraModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.UnityAnalyticsCommonModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.UnityAnalyticsModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.UnityConnectModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.UnityCurlModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.UnityTestProtocolModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.UnityWebRequestAssetBundleModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.UnityWebRequestAudioModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.UnityWebRequestModule.dll
+LotteryGameV0.1/LotteryGame_Data/Managed/UnityEngine.UnityWebRequestTextureModule.dll
+LotteryGameV0.1/MonoBleedingEdge/EmbedRuntime/mono-2.0-bdwgc.dll
+LotteryGameV0.1/MonoBleedingEdge/EmbedRuntime/MonoPosixHelper.dll
+LotteryGameV0.1/MonoBleedingEdge/etc/mono/2.0/DefaultWsdlHelpGenerator.aspx
+LotteryGameV0.1/MonoBleedingEdge/etc/mono/2.0/machine.config
+LotteryGameV0.1/MonoBleedingEdge/etc/mono/2.0/Browsers/Compat.browser
+LotteryGameV0.2/LotteryGame_Data/app.info
+LotteryGameV0.2/LotteryGame_Data/boot.config
+LotteryGameV0.2/LotteryGame_Data/globalgamemanagers
+LotteryGameV0.2/LotteryGame_Data/globalgamemanagers.assets
+LotteryGameV0.2/LotteryGame_Data/globalgamemanagers.assets.resS
+LotteryGameV0.2/LotteryGame_Data/level0
+LotteryGameV0.2/LotteryGame_Data/resources.assets
+LotteryGameV0.2/LotteryGame_Data/RuntimeInitializeOnLoads.json
+LotteryGameV0.2/LotteryGame_Data/ScriptingAssemblies.json
+LotteryGameV0.2/LotteryGame_Data/Managed/mscorlib.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/netstandard.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/Unity.Collections.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/Unity.InputSystem.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/Unity.InputSystem.ForUI.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/Unity.InternalAPIEngineBridge.001.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/Unity.Mathematics.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/Unity.Multiplayer.Center.Common.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/Unity.Rendering.LightTransport.Runtime.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/Unity.RenderPipeline.Universal.ShaderLibrary.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/Unity.RenderPipelines.Core.Runtime.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/Unity.RenderPipelines.Core.Runtime.Shared.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/Unity.RenderPipelines.Core.ShaderLibrary.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/Unity.RenderPipelines.GPUDriven.Runtime.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/Unity.RenderPipelines.Universal.2D.Runtime.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/Unity.RenderPipelines.Universal.Config.Runtime.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/Unity.RenderPipelines.Universal.Runtime.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/Unity.RenderPipelines.Universal.Shaders.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/Unity.TextMeshPro.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/Unity.Timeline.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/Unity.VisualScripting.Antlr3.Runtime.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/Unity.VisualScripting.Core.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/Unity.VisualScripting.Flow.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/Unity.VisualScripting.State.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/UnityEngine.AccessibilityModule.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/UnityEngine.AIModule.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/UnityEngine.AMDModule.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/UnityEngine.AndroidJNIModule.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/UnityEngine.AnimationModule.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/UnityEngine.ARModule.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/UnityEngine.AssetBundleModule.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/UnityEngine.AudioModule.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/UnityEngine.ClothModule.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/UnityEngine.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/UnityEngine.UnityAnalyticsCommonModule.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/UnityEngine.UnityAnalyticsModule.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/UnityEngine.UnityConnectModule.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/UnityEngine.UnityCurlModule.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/UnityEngine.UnityTestProtocolModule.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/UnityEngine.UnityWebRequestAssetBundleModule.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/UnityEngine.UnityWebRequestAudioModule.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/UnityEngine.UnityWebRequestModule.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/UnityEngine.UnityWebRequestTextureModule.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/UnityEngine.UnityWebRequestWWWModule.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/UnityEngine.VehiclesModule.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/UnityEngine.VFXModule.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/UnityEngine.VideoModule.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/UnityEngine.VirtualTexturingModule.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/UnityEngine.VRModule.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/UnityEngine.WindModule.dll
+LotteryGameV0.2/LotteryGame_Data/Managed/UnityEngine.XRModule.dll
+LotteryGameV0.2/LotteryGame_Data/Plugins/x86_64/lib_burst_generated.dll
+LotteryGameV0.2/LotteryGame_Data/Resources/unity default resources
+LotteryGameV0.2/LotteryGame_Data/Resources/unity_builtin_extra
+LotteryGameV0.6/Lotterynew.pdf
+LotteryGameV0.6/Lottery Game_Data/sharedassets1.assets
+LotteryGameV0.6/Lottery Game_Data/sharedassets1.assets.resS
+LotteryGameV0.6/Lottery Game_Data/Managed/Unity.Multiplayer.Center.Common.dll
+LotteryGameV0.6/Lottery Game_Data/Managed/Unity.Rendering.LightTransport.Runtime.dll
+LotteryGameV0.6/Lottery Game_Data/Managed/Unity.RenderPipeline.Universal.ShaderLibrary.dll
+LotteryGameV0.6/Lottery Game_Data/Managed/Unity.RenderPipelines.Core.Runtime.dll
+LotteryGameV0.6/Lottery Game_Data/Managed/Unity.RenderPipelines.Core.Runtime.Shared.dll
+LotteryGameV0.6/Lottery Game_Data/Managed/Unity.RenderPipelines.Core.ShaderLibrary.dll
+LotteryGameV0.6/Lottery Game_Data/Managed/Unity.RenderPipelines.GPUDriven.Runtime.dll
+LotteryGameV0.6/Lottery Game_Data/Managed/Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll
+LotteryGameV0.6/Lottery Game_Data/Managed/Unity.RenderPipelines.Universal.2D.Runtime.dll
+LotteryGameV0.6/Lottery Game_Data/Managed/Unity.RenderPipelines.Universal.Config.Runtime.dll
+LotteryGameV0.6/Lottery Game_Data/Managed/Unity.RenderPipelines.Universal.Runtime.dll
+LotteryGameV0.6/Lottery Game_Data/Managed/Unity.RenderPipelines.Universal.Shaders.dll
+LotteryGameV0.6/Lottery Game_Data/Managed/Unity.TextMeshPro.dll
+LotteryGameV0.6/Lottery Game_Data/Managed/Unity.Timeline.dll
+LotteryGameV0.6/Lottery Game_Data/Managed/Unity.VisualScripting.Antlr3.Runtime.dll
+LotteryGameV0.6/Lottery Game_Data/Managed/Unity.VisualScripting.Core.dll
+LotteryGameV0.6/Lottery Game_Data/Managed/UnityEngine.DirectorModule.dll
+LotteryGameV0.6/Lottery Game_Data/Managed/UnityEngine.DSPGraphModule.dll
+LotteryGameV0.6/Lottery Game_Data/Managed/UnityEngine.GameCenterModule.dll
+LotteryGameV0.6/Lottery Game_Data/Managed/UnityEngine.GIModule.dll
+LotteryGameV0.6/Lottery Game_Data/Managed/UnityEngine.GraphicsStateCollectionSerializerModule.dll
+LotteryGameV0.6/Lottery Game_Data/Managed/UnityEngine.GridModule.dll
+LotteryGameV0.6/Lottery Game_Data/Managed/UnityEngine.HierarchyCoreModule.dll
+LotteryGameV0.6/Lottery Game_Data/Managed/UnityEngine.HotReloadModule.dll
+LotteryGameV0.6/Lottery Game_Data/Managed/UnityEngine.ImageConversionModule.dll
+LotteryGameV0.6/Lottery Game_Data/Managed/UnityEngine.IMGUIModule.dll
+LotteryGameV0.6/Lottery Game_Data/Managed/UnityEngine.InputForUIModule.dll
+LotteryGameV0.6/Lottery Game_Data/Managed/UnityEngine.InputLegacyModule.dll
+LotteryGameV0.6/Lottery Game_Data/Managed/UnityEngine.InputModule.dll
+LotteryGameV0.6/Lottery Game_Data/Managed/UnityEngine.JSONSerializeModule.dll
+LotteryGameV0.6/Lottery Game_Data/Managed/UnityEngine.LocalizationModule.dll
+LotteryGameV0.6/Lottery Game_Data/Managed/UnityEngine.MarshallingModule.dll
+LotteryGameV0.6/MonoBleedingEdge/EmbedRuntime/mono-2.0-bdwgc.dll
+LotteryGameV0.6/MonoBleedingEdge/EmbedRuntime/MonoPosixHelper.dll
+LotteryGameV0.6/MonoBleedingEdge/etc/mono/2.0/DefaultWsdlHelpGenerator.aspx
+LotteryGameV0.6/MonoBleedingEdge/etc/mono/2.0/machine.config
+LotteryGameV0.6/MonoBleedingEdge/etc/mono/2.0/settings.map
+LotteryGameV0.6/MonoBleedingEdge/etc/mono/2.0/web.config
+LotteryGameV0.6/MonoBleedingEdge/etc/mono/2.0/Browsers/Compat.browser
+LotteryGameV0.6/MonoBleedingEdge/etc/mono/4.0/DefaultWsdlHelpGenerator.aspx
+LotteryGameV0.6/MonoBleedingEdge/etc/mono/4.0/machine.config
+LotteryGameV0.6/MonoBleedingEdge/etc/mono/4.0/settings.map
+LotteryGameV0.6/MonoBleedingEdge/etc/mono/4.0/Browsers/Compat.browser
+LotteryGameV0.7/Lottery Game_Data/sharedassets1.assets
+LotteryGameV0.7/Lottery Game_Data/sharedassets1.assets.resS
+LotteryGameV0.7/Lottery Game_Data/Managed/System.EnterpriseServices.dll
+LotteryGameV0.7/Lottery Game_Data/Managed/System.IO.Compression.dll
+LotteryGameV0.7/Lottery Game_Data/Managed/System.IO.Compression.FileSystem.dll
+LotteryGameV0.7/Lottery Game_Data/Managed/System.Net.Http.dll
+LotteryGameV0.7/Lottery Game_Data/Managed/System.Numerics.dll
+LotteryGameV0.7/Lottery Game_Data/Managed/System.Runtime.dll
+LotteryGameV0.7/Lottery Game_Data/Managed/System.Runtime.Serialization.dll
+LotteryGameV0.7/Lottery Game_Data/Managed/System.Runtime.Serialization.Formatters.Soap.dll
+LotteryGameV0.7/Lottery Game_Data/Managed/System.Security.dll
+LotteryGameV0.7/Lottery Game_Data/Managed/System.ServiceModel.Internals.dll
+LotteryGameV0.7/Lottery Game_Data/Managed/System.Transactions.dll
+LotteryGameV0.7/Lottery Game_Data/Managed/System.Web.ApplicationServices.dll
+LotteryGameV0.7/Lottery Game_Data/Managed/System.Web.dll
+LotteryGameV0.7/Lottery Game_Data/Managed/System.Web.Services.dll
+LotteryGameV0.7/Lottery Game_Data/Managed/System.Windows.Forms.dll
+LotteryGameV0.7/Lottery Game_Data/Managed/System.Xml.Linq.dll
+LotteryGameV0.7/Lottery Game_Data/Managed/UnityEngine.TerrainModule.dll
+LotteryGameV0.7/Lottery Game_Data/Managed/UnityEngine.TerrainPhysicsModule.dll
+LotteryGameV0.7/Lottery Game_Data/Managed/UnityEngine.TextCoreFontEngineModule.dll
+LotteryGameV0.7/Lottery Game_Data/Managed/UnityEngine.TextCoreTextEngineModule.dll
+LotteryGameV0.7/Lottery Game_Data/Managed/UnityEngine.TextRenderingModule.dll
+LotteryGameV0.7/Lottery Game_Data/Managed/UnityEngine.TilemapModule.dll
+LotteryGameV0.7/Lottery Game_Data/Managed/UnityEngine.TLSModule.dll
+LotteryGameV0.7/Lottery Game_Data/Managed/UnityEngine.UI.dll
+LotteryGameV0.7/Lottery Game_Data/Managed/UnityEngine.UIElementsModule.dll
+LotteryGameV0.7/Lottery Game_Data/Managed/UnityEngine.UIModule.dll
+LotteryGameV0.7/Lottery Game_Data/Managed/UnityEngine.UmbraModule.dll
+LotteryGameV0.7/Lottery Game_Data/Managed/UnityEngine.UnityAnalyticsCommonModule.dll
+LotteryGameV0.7/Lottery Game_Data/Managed/UnityEngine.UnityAnalyticsModule.dll
+LotteryGameV0.7/Lottery Game_Data/Managed/UnityEngine.UnityConnectModule.dll
+LotteryGameV0.7/Lottery Game_Data/Managed/UnityEngine.UnityCurlModule.dll
+LotteryGameV0.7/Lottery Game_Data/Managed/UnityEngine.UnityTestProtocolModule.dll
+LotteryGameV0.7/MonoBleedingEdge/EmbedRuntime/mono-2.0-bdwgc.dll
+LotteryGameV0.7/MonoBleedingEdge/EmbedRuntime/MonoPosixHelper.dll
+LotteryGameV0.7/MonoBleedingEdge/etc/mono/2.0/DefaultWsdlHelpGenerator.aspx
+LotteryGameV0.7/MonoBleedingEdge/etc/mono/2.0/machine.config
+LotteryGameV0.7/MonoBleedingEdge/etc/mono/2.0/settings.map
+LotteryGameV0.7/MonoBleedingEdge/etc/mono/2.0/web.config
+LotteryGameV0.7/MonoBleedingEdge/etc/mono/2.0/Browsers/Compat.browser
+LotteryGameV0.7/MonoBleedingEdge/etc/mono/4.0/DefaultWsdlHelpGenerator.aspx
+LotteryGameV0.7/MonoBleedingEdge/etc/mono/4.0/machine.config
+LotteryGameV0.7/MonoBleedingEdge/etc/mono/4.0/settings.map
+LotteryGameV0.7/MonoBleedingEdge/etc/mono/4.0/web.config
+LotteryGameV0.7/MonoBleedingEdge/etc/mono/4.0/Browsers/Compat.browser
+Assets/fileBrowser/UnityStandaloneFileBrowser-master/Plugins/MacOS/StandaloneFileBrowser/StandaloneFileBrowser.xcodeproj/xcuserdata/gokhangokce.xcuserdatad/xcschemes/xcschememanagement.plist.meta

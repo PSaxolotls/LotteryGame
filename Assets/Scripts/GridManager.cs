@@ -1,0 +1,681 @@
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class GridManager : MonoBehaviour
+{
+    [Header("Grid Inputs (fixed layout)")]
+    public GridLayoutGroup layoutGrp;
+    public int rows = 10;
+    public int cols = 10;
+    public bool reserveFirstRowLastCol = false;
+
+    public GameObject[,] gridInputs;
+    public GameObject[] allFInputs;
+    public GameObject[] allBInputs;
+
+    public Toggle familyToggle;
+
+    public Toggle allNum;
+    public Toggle evenNum;
+    public Toggle oddNum;
+    private Toggle lastActive;
+
+    public SeriesManager seriesManager;
+    // Top level dictionary keyed by (series, range)
+    private Dictionary<(int series, int range), Dictionary<(int row, int col), string>> allGridData =
+        new Dictionary<(int, int), Dictionary<(int, int), string>>();
+
+    public bool isLoading;
+
+    // CRITICAL: A flag to prevent circular updates when setting input.text
+    private bool isUpdatingInputs = false;
+
+    // Track separate contributions
+    private int?[,] rowValues;
+    private int?[,] colValues;
+
+    private int currentRow = 0;
+    private int currentCol = 0;
+
+    private void Awake()
+    {
+        gridInputs = new GameObject[rows, cols];
+
+        int index = 0;
+        for (int r = 0; r < rows; r++)
+        {
+            for (int c = 0; c < cols; c++)
+            {
+                Transform child = layoutGrp.transform.GetChild(index);
+                gridInputs[r, c] = child.gameObject;
+                index++;
+            }
+        }
+    }
+
+    private void Start()
+    {
+        InitGridTracking();
+
+        allNum.isOn = true;
+        evenNum.isOn = false;
+        oddNum.isOn = false;
+        lastActive = allNum;
+
+        for (int r = 0; r < allFInputs.Length; r++)
+        {
+            int rowIndex = r;
+            allFInputs[r].transform.GetChild(1).GetComponent<TMP_InputField>().onValueChanged.AddListener(val => FillRow(rowIndex, val));
+        }
+
+        for (int c = 0; c < allBInputs.Length; c++)
+        {
+            int colIndex = c;
+            allBInputs[c].transform.GetChild(1).GetComponent<TMP_InputField>().onValueChanged.AddListener(val => FillColumn(colIndex, val));
+        }
+
+        for (int r = 0; r < rows; r++)
+        {
+            for (int c = 0; c < cols; c++)
+            {
+                var inputField = gridInputs[r, c].transform.GetChild(1).GetComponent<TMP_InputField>();
+                int capturedRow = r;
+                int capturedCol = c;
+
+                inputField.onValueChanged.AddListener(newValue => OnSingleInputChanged(capturedRow, capturedCol, newValue));
+                inputField.onSubmit.AddListener(newValue => OnSingleInputChanged(capturedRow, capturedCol, newValue));
+            }
+        }
+
+        allNum.onValueChanged.AddListener((isOn) => HandleToggle(allNum, isOn));
+        evenNum.onValueChanged.AddListener((isOn) => HandleToggle(evenNum, isOn));
+        oddNum.onValueChanged.AddListener((isOn) => HandleToggle(oddNum, isOn));
+    }
+
+    private void OnSingleInputChanged(int r, int c, string newValue)
+    {
+        if (isUpdatingInputs)
+        {
+            return;
+        }
+
+        TMP_InputField field = gridInputs[r, c].transform.GetChild(1).GetComponent<TMP_InputField>();
+        ValueValidation(newValue, field);
+
+        if (familyToggle.isOn)
+        {
+            if (int.TryParse(gridInputs[r, c].transform.GetChild(0).GetComponent<TMP_Text>().text, out int baseNumber))
+            {
+                UpdateFamily(baseNumber, field.text);
+            }
+        }
+
+        // ? NEW: This is the only place we call the recalculation method for a single input change
+        RecalculateTotals();
+    }
+
+    private void UpdateFamily(int baseNumber, string value)
+    {
+        isUpdatingInputs = true;
+
+        HashSet<int> family = GenerateFamily(baseNumber);
+
+        foreach (int num in family)
+        {
+            UpdateInputForNumber(num, value);
+        }
+
+        isUpdatingInputs = false;
+    }
+
+    private void UpdateInputForNumber(int number, string value)
+    {
+        for (int r = 0; r < rows; r++)
+        {
+            for (int c = 0; c < cols; c++)
+            {
+                GameObject cell = gridInputs[r, c];
+                if (cell == null) continue;
+
+                TMP_Text numberText = cell.transform.GetChild(0).GetComponent<TMP_Text>();
+                TMP_InputField input = cell.transform.GetChild(1).GetComponent<TMP_InputField>();
+
+                if (numberText == null || input == null) continue;
+
+                if (int.TryParse(numberText.text, out int num) && num == number)
+                {
+                    input.text = value;
+                }
+            }
+        }
+    }
+
+    // --- FAMILY LOGIC ---
+    private static readonly Dictionary<int, int> SwapMap = new Dictionary<int, int>
+    {
+        { 0, 5 }, { 5, 0 }, { 1, 6 }, { 6, 1 }, { 2, 7 },
+        { 7, 2 }, { 3, 8 }, { 8, 3 }, { 4, 9 }, { 9, 4 }
+    };
+
+    public static HashSet<int> GenerateFamily(int baseNumber)
+    {
+        HashSet<int> family = new HashSet<int>();
+        int prefix = baseNumber / 100;
+        int tens = (baseNumber / 10) % 10;
+        int units = baseNumber % 10;
+        family.Add(baseNumber);
+
+        TryAddSwap(family, prefix, tens, units, swapTens: false, swapUnits: true);
+        TryAddSwap(family, prefix, tens, units, swapTens: true, swapUnits: false);
+        TryAddSwap(family, prefix, tens, units, swapTens: true, swapUnits: true);
+
+        int invTens = units;
+        int invUnits = tens;
+        int inverse = prefix * 100 + invTens * 10 + invUnits;
+        family.Add(inverse);
+
+        TryAddSwap(family, prefix, invTens, invUnits, swapTens: false, swapUnits: true);
+        TryAddSwap(family, prefix, invTens, invUnits, swapTens: true, swapUnits: false);
+        TryAddSwap(family, prefix, invTens, invUnits, swapTens: true, swapUnits: true);
+
+        return family;
+    }
+
+    private static void TryAddSwap(HashSet<int> family, int prefix, int tens, int units, bool swapTens, bool swapUnits)
+    {
+        int newTens = tens;
+        int newUnits = units;
+
+        if (swapTens && SwapMap.ContainsKey(tens))
+            newTens = SwapMap[tens];
+
+        if (swapUnits && SwapMap.ContainsKey(units))
+            newUnits = SwapMap[units];
+
+        int newNumber = prefix * 100 + newTens * 10 + newUnits;
+        family.Add(newNumber);
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+
+    #region YOUR EXISTING METHODS
+
+    void Update()
+    {
+        if (gridInputs == null) return;
+
+        var selectedObj = UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject;
+        if (selectedObj != null)
+        {
+            TMP_InputField selected = selectedObj.GetComponent<TMP_InputField>();
+            if (selected != null)
+            {
+                bool found = false;
+                for (int r = 0; r < gridInputs.GetLength(0); r++)
+                {
+                    for (int c = 0; c < gridInputs.GetLength(1); c++)
+                    {
+                        if (gridInputs[r, c] != null && gridInputs[r, c].transform.GetChild(1).GetComponent<TMP_InputField>() == selected)
+                        {
+                            currentRow = r;
+                            currentCol = c;
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (found) break;
+                }
+
+                if (Input.GetKeyDown(KeyCode.UpArrow))
+                {
+                    MoveTo(currentRow - 1, currentCol);
+                }
+                else if (Input.GetKeyDown(KeyCode.DownArrow))
+                {
+                    MoveTo(currentRow + 1, currentCol);
+                }
+                else if (Input.GetKeyDown(KeyCode.LeftArrow))
+                {
+                    MoveTo(currentRow, currentCol - 1);
+                }
+                else if (Input.GetKeyDown(KeyCode.RightArrow))
+                {
+                    MoveTo(currentRow, currentCol + 1);
+                }
+            }
+        }
+    }
+
+    void MoveTo(int newRow, int newCol)
+    {
+        if (newRow >= 0 && newRow < gridInputs.GetLength(0) &&
+            newCol >= 0 && newCol < gridInputs.GetLength(1) &&
+            gridInputs[newRow, newCol] != null)
+        {
+            var input = gridInputs[newRow, newCol].transform.GetChild(1).GetComponent<TMP_InputField>();
+            if (input != null)
+            {
+                input.Select();
+                input.ActivateInputField();
+            }
+        }
+    }
+
+    public void UpdateGridNumbers(int seriesBase, int rangeIndex)
+    {
+        int bandStart = (seriesBase * 100) + (rangeIndex * 100);
+        int bandEnd = bandStart + 99;
+
+        int n = bandStart;
+
+        for (int r = 0; r < rows; r++)
+        {
+            int maxColsThisRow = cols;
+            maxColsThisRow = Mathf.Max(0, cols);
+
+            for (int c = 0; c < maxColsThisRow; c++)
+            {
+                var label = GetCellLabel(r, c);
+                if (label == null) continue;
+
+                if (n <= bandEnd)
+                {
+                    label.text = n.ToString();
+                    n++;
+                }
+                else
+                {
+                    label.text = "";
+                }
+            }
+
+            for (int c = maxColsThisRow; c < cols; c++)
+            {
+                var label = GetCellLabel(r, c);
+                if (label != null) label.text = "";
+            }
+        }
+    }
+
+    private TMP_Text GetCellLabel(int r, int c)
+    {
+        var go = gridInputs[r, c];
+        if (go == null) return null;
+
+        TMP_Text tmp = null;
+        if (go.transform.childCount > 0)
+            tmp = go.transform.GetChild(0).GetComponent<TMP_Text>();
+        if (tmp == null)
+            tmp = go.GetComponentInChildren<TMP_Text>(true);
+
+        return tmp;
+    }
+
+    void InitGridTracking()
+    {
+        rowValues = new int?[rows, cols];
+        colValues = new int?[rows, cols];
+    }
+
+    void UpdateCell(int r, int c)
+    {
+        int rowVal = rowValues[r, c] ?? 0;
+        int colVal = colValues[r, c] ?? 0;
+        int sum = rowVal + colVal;
+
+        GameObject go = gridInputs[r, c];
+        if (go == null) return;
+
+        TMP_InputField input = go.GetComponent<TMP_InputField>() ?? go.GetComponentInChildren<TMP_InputField>();
+        if (input == null) return;
+
+        isUpdatingInputs = true;
+        input.text = sum == 0 ? "" : sum.ToString();
+        isUpdatingInputs = false;
+
+        foreach (int series in seriesManager.currentSeriesSelected)
+        {
+            foreach (int range in seriesManager.currentRangeSelected)
+            {
+                SaveCurrentGridData(series, range);
+            }
+        }
+
+        // ? NEW: Add this call to ensure totals are updated after a row/column fill
+        RecalculateTotals();
+    }
+
+    void FillRow(int rowIndex, string value)
+    {
+        isUpdatingInputs = true;
+        for (int c = 0; c < cols; c++)
+        {
+            if (string.IsNullOrEmpty(value))
+                rowValues[rowIndex, c] = null;
+            else if (int.TryParse(value, out int amount))
+                rowValues[rowIndex, c] = amount;
+
+            UpdateCell(rowIndex, c);
+        }
+        isUpdatingInputs = false;
+    }
+
+    void FillColumn(int colIndex, string value)
+    {
+        isUpdatingInputs = true;
+        for (int r = 0; r < rows; r++)
+        {
+            if (string.IsNullOrEmpty(value))
+                colValues[r, colIndex] = null;
+            else if (int.TryParse(value, out int amount))
+                colValues[r, colIndex] = amount;
+
+            UpdateCell(r, colIndex);
+        }
+        isUpdatingInputs = false;
+    }
+
+    public void HandleAllToggle()
+    {
+        allNum.isOn = true;
+        evenNum.isOn = false;
+        oddNum.isOn = false;
+    }
+
+    public void HandleEvenToggle()
+    {
+        allNum.isOn = false;
+        evenNum.isOn = true;
+        oddNum.isOn = false;
+    }
+
+    public void HandleOddToggle()
+    {
+        allNum.isOn = false;
+        evenNum.isOn = false;
+        oddNum.isOn = true;
+    }
+
+    private void HandleToggle(Toggle changedToggle, bool isOn)
+    {
+        if (isOn)
+        {
+            RemoveAllListeners();
+            if (changedToggle != allNum) allNum.isOn = false;
+            if (changedToggle != evenNum) evenNum.isOn = false;
+            if (changedToggle != oddNum) oddNum.isOn = false;
+
+            lastActive = changedToggle;
+            AddAllListeners();
+        }
+        else
+        {
+            if (changedToggle == lastActive)
+            {
+                RemoveAllListeners();
+                changedToggle.isOn = true;
+                AddAllListeners();
+            }
+        }
+    }
+
+    private void RemoveAllListeners()
+    {
+        allNum.onValueChanged.RemoveAllListeners();
+        evenNum.onValueChanged.RemoveAllListeners();
+        oddNum.onValueChanged.RemoveAllListeners();
+    }
+
+    private void AddAllListeners()
+    {
+        allNum.onValueChanged.AddListener((isOn) => HandleToggle(allNum, isOn));
+        evenNum.onValueChanged.AddListener((isOn) => HandleToggle(evenNum, isOn));
+        oddNum.onValueChanged.AddListener((isOn) => HandleToggle(oddNum, isOn));
+    }
+
+    public void ValueValidation(string value, TMP_InputField field)
+    {
+        int parsedValue;
+
+        if (field.text == "")
+        {
+            SeriesManager.OnQuantityAdded?.Invoke(0, seriesManager.currentSeriesSelected, seriesManager.currentRangeSelected);
+        }
+        if (value == "")
+        {
+            TMP_Text label = field.transform.parent.GetChild(0).GetComponent<TMP_Text>();
+            if (int.TryParse(label.text, out int key))
+            {
+                seriesManager.betNumbers.Remove(int.Parse(field.transform.parent.GetChild(0).GetComponent<TMP_Text>().text));
+                string dictLog = "Current betNumbers: ";
+                foreach (var kvp in seriesManager.betNumbers)
+                {
+                    dictLog += $"[{kvp.Key} : {kvp.Value}] ";
+                }
+                Debug.Log(dictLog);
+            }
+        }
+        if (int.TryParse(value, out parsedValue))
+        {
+            if (parsedValue != 0 || parsedValue.ToString() == "")
+            {
+                seriesManager.isSingleRangeSelected = false;
+            }
+        }
+
+        if (parsedValue < 0 || parsedValue > 999)
+        {
+            field.text = "999";
+            return;
+        }
+
+        StartCoroutine(DelayCall(parsedValue));
+    }
+
+    public IEnumerator DelayCall(int parsedValue)
+    {
+        yield return new WaitForSeconds(1f);
+        if (parsedValue > 0 && parsedValue < 999)
+        {
+            foreach (int series in seriesManager.currentSeriesSelected)
+            {
+                foreach (int range in seriesManager.currentRangeSelected)
+                {
+                    SaveCurrentGridData(series, range);
+                }
+            }
+        }
+    }
+
+    public void SaveCurrentGridData(int series, int range)
+    {
+        var key = (series, range);
+
+        if (!allGridData.ContainsKey(key))
+            allGridData[key] = new Dictionary<(int, int), string>();
+
+        var gridInputdata = allGridData[key];
+        gridInputdata.Clear();
+
+        for (int row = 0; row < rows; row++)
+        {
+            for (int col = 0; col < cols; col++)
+            {
+                var textField = gridInputs[row, col].transform.GetChild(1).GetComponent<TMP_InputField>();
+                string text = textField.text;
+
+                if (!string.IsNullOrEmpty(text))
+                {
+                    if (int.TryParse(text, out int val) && val >= 0 && val <= 999)
+                    {
+                        gridInputdata[(row, col)] = text;
+                        Debug.Log($"Saved ({series},{range}) at {row},{col} = {text}" + " Number is ");
+                        int bettedNum = CalculateNumbers(series, range, row, col);
+
+                        if (!seriesManager.betNumbers.ContainsKey(bettedNum))
+                        {
+                            seriesManager.betNumbers.Add(bettedNum, int.Parse(text));
+                            string dictLog = "Current betNumbers: ";
+                            foreach (var kvp in seriesManager.betNumbers)
+                            {
+                                dictLog += $"[{kvp.Key} : {kvp.Value}] ";
+                            }
+                            Debug.Log(dictLog);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public int CalculateNumbers(int series, int range, int row, int col)
+    {
+        string preBetNum = (series + range).ToString() + row.ToString() + col.ToString();
+        string finalNum = preBetNum.ToString();
+
+        return int.Parse(finalNum);
+    }
+
+    public void LoadGridData(int series, int range)
+    {
+        var key = (series, range);
+
+        if (!allGridData.ContainsKey(key))
+        {
+            return;
+        }
+
+        isUpdatingInputs = true;
+        for (int row = 0; row < rows; row++)
+        {
+            for (int col = 0; col < cols; col++)
+            {
+                var textField = gridInputs[row, col].transform.GetChild(1).GetComponent<TMP_InputField>();
+                textField.text = "";
+            }
+        }
+
+        var gridInputsdata = allGridData[key];
+
+        foreach (var kvp in gridInputsdata)
+        {
+            int row = kvp.Key.Item1;
+            int col = kvp.Key.Item2;
+            string value = kvp.Value;
+
+            var textField = gridInputs[row, col].transform.GetChild(1).GetComponent<TMP_InputField>();
+            textField.text = value;
+            Debug.Log($"Loaded ({series},{range}) at {row},{col} = {value}");
+        }
+        isUpdatingInputs = false;
+
+        // ? NEW: Add this call to ensure totals are updated after loading a saved grid
+        RecalculateTotals();
+    }
+
+    void CalculationLogic(int value)
+    {
+    }
+
+    // ? REFACTORED: Renamed from OnValueAddedInGridInputs to a more descriptive name
+    // and made it public so other methods can call it.
+    public void RecalculateTotals()
+    {
+        int value;
+        int finalValue = 0;
+        foreach (var obj in gridInputs)
+        {
+            if (int.TryParse(obj.transform.GetChild(1).GetComponent<TMP_InputField>().text, out value))
+            {
+                finalValue += value;
+            }
+            if (finalValue == 0)
+            {
+                obj.transform.GetChild(1).GetComponent<TMP_InputField>().text = "";
+            }
+        }
+        SeriesManager.OnQuantityAdded?.Invoke(finalValue, seriesManager.currentSeriesSelected, seriesManager.currentRangeSelected);
+    }
+
+    public void ClearAll()
+    {
+        seriesManager.ClearAllSeriesAndRange();
+        ClearMainInputs();
+        ClearStoredDataFromDictionary();
+        // Assuming GameManager and ToastManager exist
+        GameManager.instance.qntypointsMgr.ClearData(); 
+        ClearBandF();
+
+         SoundManager.Instance.PlaySound(SoundManager.Instance.commonSound);
+    }
+
+    public void ClearMainInputs()
+    {
+        foreach (var obj in gridInputs)
+        {
+            obj.transform.GetChild(1).GetComponent<TMP_InputField>().text = "";
+        }
+    }
+
+    public void ClearSeries()
+    {
+        seriesManager.currentSeriesSelected.Clear();
+    }
+
+    public void ClearRange()
+    {
+        seriesManager.currentRangeSelected.Clear();
+    }
+
+    public void ClearStoredDataFromDictionary()
+    {
+        allGridData.Clear();
+        seriesManager.betNumbers.Clear();
+        // ToastManager.Instance.ShowToast("Cleared");
+    }
+    public void OnValueAddedInGridInputs()
+    {
+        int value;
+        int finalValue = 0;
+        foreach (var obj in gridInputs)
+        {
+            if (int.TryParse(obj.transform.GetChild(1).GetComponent<TMP_InputField>().text, out value))
+            {
+                finalValue += value;
+            }
+            if (finalValue == 0)
+            {
+                obj.transform.GetChild(1).GetComponent<TMP_InputField>().text = "";
+            }
+        }
+        SeriesManager.OnQuantityAdded?.Invoke(finalValue, seriesManager.currentSeriesSelected, seriesManager.currentRangeSelected);
+    }
+    public void ClearBandF()
+    {
+        foreach (var go in allFInputs)
+        {
+            if (go == null) continue;
+            var tmpInput = go.transform.GetChild(1).GetComponent<TMP_InputField>();
+            if (tmpInput != null) tmpInput.text = "";
+        }
+
+        foreach (var go in allBInputs)
+        {
+            if (go == null) continue;
+            var tmpInput = go.transform.GetChild(1).GetComponent<TMP_InputField>();
+            if (tmpInput != null) tmpInput.text = "";
+        }
+        Debug.Log("All F and B inputs cleared.");
+    }
+
+    #endregion
+}
+
+[System.Serializable]
+public class GridData
+{
+    public Dictionary<(int row, int col), string> inputs = new Dictionary<(int, int), string>();
+}

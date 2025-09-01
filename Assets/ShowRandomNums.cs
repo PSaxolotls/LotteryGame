@@ -1,0 +1,79 @@
+using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
+
+public class ShowRandomNums : MonoBehaviour
+{
+    public GameObject[] list1;
+    public GameObject[] list2;
+    public GameObject[] list3;
+
+    public Coroutine animCoroutine;
+
+    private int[] prefixes1;
+    private int[] prefixes2;
+    private int[] prefixes3;
+
+    void Start()
+    {
+        // Assign prefixes at the beginning
+        prefixes1 = AssignPrefixes(list1, 10); // 10, 11, 12...
+        prefixes2 = AssignPrefixes(list2, 30); // 30, 31, 32...
+        prefixes3 = AssignPrefixes(list3, 50); // 50, 51, 52...
+
+        animCoroutine = StartCoroutine(AnimateNumbers());
+    }
+
+    private int[] AssignPrefixes(GameObject[] list, int startPrefix)
+    {
+        int[] prefixes = new int[list.Length];
+        for (int i = 0; i < list.Length; i++)
+        {
+            prefixes[i] = startPrefix + i; // sequential prefixes
+        }
+        return prefixes;
+    }
+
+    public IEnumerator AnimateNumbers()
+    {
+        float duration = 10f;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            UpdateListWithRandom(list1, prefixes1);
+            UpdateListWithRandom(list2, prefixes2);
+            UpdateListWithRandom(list3, prefixes3);
+
+            yield return new WaitForSeconds(0.1f);
+            elapsed += 0.1f;
+        }
+
+        StartCoroutine(GameManager.instance.FetchResults(list1, list2, list3));
+        StartCoroutine(DisableDelay());
+        animCoroutine = null;
+    }
+
+    IEnumerator DisableDelay()
+    {
+        yield return new WaitForSeconds(2f);
+        this.gameObject.SetActive(false);
+        GameManager.instance.GetTimer();
+    }
+
+    private void UpdateListWithRandom(GameObject[] list, int[] prefixes)
+    {
+        for (int i = 0; i < list.Length; i++)
+        {
+            if (list[i] != null && list[i].transform.GetChild(0).TryGetComponent(out TMPro.TMP_Text tmp))
+            {
+                // Randomize only last 2 digits
+                int lastTwo = Random.Range(0, 100);
+                string suffix = lastTwo.ToString("00");
+
+                // Use fixed prefix for this element
+                tmp.text = prefixes[i].ToString("00") + suffix;
+            }
+        }
+    }
+}
