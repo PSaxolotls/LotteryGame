@@ -1,3 +1,4 @@
+using NUnit.Framework.Constraints;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -623,7 +624,7 @@ public class GridManager : MonoBehaviour
                 foreach (int range in seriesManager.currentRangeSelected)
                 {
                     SaveCurrentGridData(series, range);
-                    Debug.Log("Saving");
+                 //   Debug.Log("Saving");
                 }
             }
         }
@@ -632,7 +633,7 @@ public class GridManager : MonoBehaviour
     public void SaveCurrentGridData(int series, int range)
     {
         var key = (series, range);
-
+        Debug.Log("Saved key : " + key + " For series : " + series + " range : " + range );
         // ? FIX: Instead of clearing the whole dictionary,
         // we manage the data for this specific key.
         if (!allGridData.ContainsKey(key))
@@ -665,6 +666,8 @@ public class GridManager : MonoBehaviour
                         else
                         {
                             seriesManager.betNumbers.Add(bettedNum, val);
+                            Debug.Log("Number : " + bettedNum + " Added to dictionary : " + "with value : " + val);
+
                         }
                     }
                 }
@@ -685,7 +688,7 @@ public class GridManager : MonoBehaviour
     public void LoadGridData(int series, int range)
     {
         var key = (series, range);
-        Debug.Log("Loading data for : " + "Series : " + series + " Range : " + range);
+        Debug.Log("Loading data for key : " + key + " For series : " + series + " range : " + range);
         if (!allGridData.ContainsKey(key))
         {
             return;
@@ -715,7 +718,7 @@ public class GridManager : MonoBehaviour
 
             var textField = gridInputs[row, col].transform.GetChild(1).GetComponent<TMP_InputField>();
             textField.text = value;
-            Debug.Log($"Loaded ({series},{range}) at {row},{col} = {value}");
+            Debug.Log($"Loaded series range :  ({series},{range}) at {row},{col} with value : {value}");
         }
         isUpdatingInputs = false;
 

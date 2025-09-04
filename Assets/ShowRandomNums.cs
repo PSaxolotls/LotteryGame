@@ -36,7 +36,7 @@ public class ShowRandomNums : MonoBehaviour
 
     public IEnumerator AnimateNumbers()
     {
-        float duration = 10f;
+        float duration = 2f;
         float elapsed = 0f;
 
         while (elapsed < duration)
