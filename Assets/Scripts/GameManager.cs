@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using SFB;
 using UnityEngine.SceneManagement;
+using System.Linq;
 public class GameManager : MonoBehaviour
 {
     [DllImport("user32.dll")]
@@ -62,6 +63,7 @@ public class GameManager : MonoBehaviour
             seriesMgr.ClearAllSeriesAndRange();
             gridMgr.ClearAll();
             qntypointsMgr.ClearData();
+            gridMgr.ClearPopup();
         }
     }
 
@@ -226,7 +228,10 @@ public class GameManager : MonoBehaviour
                 gridMgr.SaveCurrentGridData(series, range);
             }
         }
-        StartCoroutine(SubmitDictionary(seriesMgr.betNumbers, PlayerPrefs.GetInt("UserId"), int.Parse(qntypointsMgr.PointsTotalTxt.text), ""));
+        Dictionary<int, int> sortedDicByKey = seriesMgr.betNumbers
+    .OrderBy(kvp => kvp.Key)
+    .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+        StartCoroutine(SubmitDictionary(sortedDicByKey, PlayerPrefs.GetInt("UserId"), int.Parse(qntypointsMgr.PointsTotalTxt.text), ""));
     }
     private Coroutine timerCoroutine;
     public void GetTimer()

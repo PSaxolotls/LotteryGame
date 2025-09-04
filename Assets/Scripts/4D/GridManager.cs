@@ -758,6 +758,11 @@ public class GridManager : MonoBehaviour
 
         SoundManager.Instance.PlaySound(SoundManager.Instance.commonSound);
     }
+    public void ClearPopup()
+    {
+        ToastManager.Instance.ShowToast("Cleared");
+    }
+
 
     public void ClearMainInputs()
     {
@@ -781,7 +786,7 @@ public class GridManager : MonoBehaviour
     {
         allGridData.Clear();
         seriesManager.betNumbers.Clear();
-         ToastManager.Instance.ShowToast("Cleared");
+       //  ToastManager.Instance.ShowToast("Cleared");
     }
     public void OnValueAddedInGridInputs()
     {
