@@ -135,6 +135,19 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -459,7 +472,21 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      2D Quiz Contest_0: -1585326628777223027
+      2D Quiz Contest_1: -7152399928855563804
+      2D Quiz Contest_10: -4284515548181191918
+      2D Quiz Contest_11: -3863708307977110841
+      2D Quiz Contest_12: -8338471719245844008
+      2D Quiz Contest_13: -5449534156244666945
+      2D Quiz Contest_2: 5753035883702929246
+      2D Quiz Contest_3: -5411922357875383090
+      2D Quiz Contest_4: -1619118494398387589
+      2D Quiz Contest_5: 7320097466842508492
+      2D Quiz Contest_6: -5763879895071961716
+      2D Quiz Contest_7: -2905237408622304604
+      2D Quiz Contest_8: 8419602527742283634
+      2D Quiz Contest_9: 2697203485205064806
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

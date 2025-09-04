@@ -39,7 +39,7 @@ public class GridManager : MonoBehaviour
 
     private int currentRow = 0;
     private int currentCol = 0;
-
+    private int currentIndexF, currentIndexB;
     private void Awake()
     {
         gridInputs = new GameObject[rows, cols];
@@ -68,13 +68,29 @@ public class GridManager : MonoBehaviour
         for (int r = 0; r < allFInputs.Length; r++)
         {
             int rowIndex = r;
-            allFInputs[r].transform.GetChild(1).GetComponent<TMP_InputField>().onValueChanged.AddListener(val => FillRow(rowIndex, val));
+            // Capture the TMP_InputField instance
+            TMP_InputField input = allFInputs[r].transform.GetChild(1).GetComponent<TMP_InputField>();
+
+            // Pass the input instance as an additional parameter
+            input.onValueChanged.AddListener(val =>
+            {
+                FillRow(rowIndex, val);
+                ValueValidation(val, input);
+            });
         }
 
         for (int c = 0; c < allBInputs.Length; c++)
         {
             int colIndex = c;
-            allBInputs[c].transform.GetChild(1).GetComponent<TMP_InputField>().onValueChanged.AddListener(val => FillColumn(colIndex, val));
+            // Capture the TMP_InputField instance
+            TMP_InputField input = allBInputs[c].transform.GetChild(1).GetComponent<TMP_InputField>();
+
+            // Pass the input instance as an additional parameter
+            input.onValueChanged.AddListener(val =>
+            {
+                FillColumn(colIndex, val);
+                ValueValidation(val, input);
+            });
         }
 
         for (int r = 0; r < rows; r++)
@@ -113,7 +129,16 @@ public class GridManager : MonoBehaviour
             }
         }
 
-        // ? NEW: This is the only place we call the recalculation method for a single input change
+        // This is the crucial part:
+        // When a single input changes, you need to save ALL active ranges.
+        foreach (int series in seriesManager.currentSeriesSelected)
+        {
+            foreach (int range in seriesManager.currentRangeSelected)
+            {
+                SaveCurrentGridData(series, range);
+            }
+        }
+
         RecalculateTotals();
     }
 
@@ -205,7 +230,7 @@ public class GridManager : MonoBehaviour
 
     void Update()
     {
-        if (gridInputs == null) return;
+        if (gridInputs == null && allFInputs == null && allBInputs == null) return;
 
         var selectedObj = UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject;
         if (selectedObj != null)
@@ -213,10 +238,11 @@ public class GridManager : MonoBehaviour
             TMP_InputField selected = selectedObj.GetComponent<TMP_InputField>();
             if (selected != null)
             {
+                // --- GRID INPUTS ---
                 bool found = false;
-                for (int r = 0; r < gridInputs.GetLength(0); r++)
+                for (int r = 0; r < (gridInputs?.GetLength(0) ?? 0); r++)
                 {
-                    for (int c = 0; c < gridInputs.GetLength(1); c++)
+                    for (int c = 0; c < (gridInputs?.GetLength(1) ?? 0); c++)
                     {
                         if (gridInputs[r, c] != null && gridInputs[r, c].transform.GetChild(1).GetComponent<TMP_InputField>() == selected)
                         {
@@ -229,38 +255,100 @@ public class GridManager : MonoBehaviour
                     if (found) break;
                 }
 
-                if (Input.GetKeyDown(KeyCode.UpArrow))
+                if (found)
                 {
-                    MoveTo(currentRow - 1, currentCol);
+                    if (Input.GetKeyDown(KeyCode.UpArrow))
+                        MoveTo(currentRow - 1, currentCol);
+                    else if (Input.GetKeyDown(KeyCode.DownArrow))
+                        MoveTo(currentRow + 1, currentCol);
+                    else if (Input.GetKeyDown(KeyCode.LeftArrow))
+                        MoveLeft();
+                    else if (Input.GetKeyDown(KeyCode.RightArrow))
+                        MoveRight();
                 }
-                else if (Input.GetKeyDown(KeyCode.DownArrow))
+
+                // --- ALL F INPUTS ---
+                for (int i = 0; i < (allFInputs?.Length ?? 0); i++)
                 {
-                    MoveTo(currentRow + 1, currentCol);
+                    if (allFInputs[i] != null && allFInputs[i].transform.GetChild(1).GetComponent<TMP_InputField>() == selected)
+                    {
+                        currentIndexF = i;
+                        if (Input.GetKeyDown(KeyCode.UpArrow))
+                            MoveF(currentIndexF - 1);
+                        else if (Input.GetKeyDown(KeyCode.DownArrow))
+                            MoveF(currentIndexF + 1);
+                        break;
+                    }
                 }
-                else if (Input.GetKeyDown(KeyCode.LeftArrow))
+
+                // --- ALL B INPUTS ---
+                for (int i = 0; i < (allBInputs?.Length ?? 0); i++)
                 {
-                    MoveTo(currentRow, currentCol - 1);
-                }
-                else if (Input.GetKeyDown(KeyCode.RightArrow))
-                {
-                    MoveTo(currentRow, currentCol + 1);
+                    if (allBInputs[i] != null && allBInputs[i].transform.GetChild(1).GetComponent<TMP_InputField>() == selected)
+                    {
+                        currentIndexB = i;
+                        if (Input.GetKeyDown(KeyCode.LeftArrow))
+                            MoveB(currentIndexB - 1);
+                        else if (Input.GetKeyDown(KeyCode.RightArrow))
+                            MoveB(currentIndexB + 1);
+                        break;
+                    }
                 }
             }
         }
     }
 
-    void MoveTo(int newRow, int newCol)
+    void MoveTo(int r, int c)
     {
-        if (newRow >= 0 && newRow < gridInputs.GetLength(0) &&
-            newCol >= 0 && newCol < gridInputs.GetLength(1) &&
-            gridInputs[newRow, newCol] != null)
+        if (r >= 0 && r < gridInputs.GetLength(0) && c >= 0 && c < gridInputs.GetLength(1) && gridInputs[r, c] != null)
         {
-            var input = gridInputs[newRow, newCol].transform.GetChild(1).GetComponent<TMP_InputField>();
-            if (input != null)
-            {
-                input.Select();
-                input.ActivateInputField();
-            }
+            gridInputs[r, c].transform.GetChild(1).GetComponent<TMP_InputField>().Select();
+        }
+    }
+    void MoveLeft()
+    {
+        int newRow = currentRow;
+        int newCol = currentCol - 1;
+
+        // if at first column, go to previous row’s last column
+        if (newCol < 0)
+        {
+            newRow--;
+            if (newRow >= 0)
+                newCol = gridInputs.GetLength(1) - 1;
+        }
+
+        MoveTo(newRow, newCol);
+    }
+
+    void MoveRight()
+    {
+        int newRow = currentRow;
+        int newCol = currentCol + 1;
+
+        // if at last column, go to next row’s first column
+        if (newCol >= gridInputs.GetLength(1))
+        {
+            newRow++;
+            if (newRow < gridInputs.GetLength(0))
+                newCol = 0;
+        }
+
+        MoveTo(newRow, newCol);
+    }
+    void MoveF(int index)
+    {
+        if (index >= 0 && index < allFInputs.Length && allFInputs[index] != null)
+        {
+            allFInputs[index].transform.GetChild(1).GetComponent<TMP_InputField>().Select();
+        }
+    }
+
+    void MoveB(int index)
+    {
+        if (index >= 0 && index < allBInputs.Length && allBInputs[index] != null)
+        {
+            allBInputs[index].transform.GetChild(1).GetComponent<TMP_InputField>().Select();
         }
     }
 
@@ -348,34 +436,84 @@ public class GridManager : MonoBehaviour
         RecalculateTotals();
     }
 
-    void FillRow(int rowIndex, string value)
+    //public void ValueValidation(string value, out int amount)
+    //{
+    //    if (int.TryParse(value, out amount))
+    //    {
+    //        if (amount < 0 || amount > 999)
+    //        {
+    //            // Invalid range, set amount to a safe default.
+    //            amount = 0;
+    //            // You could also provide user feedback here, like a toast message.
+    //            if (amount < 0 || amount > 999)
+    //            {
+    //                field.text = "999";
+    //                return;
+    //            }
+    //        }
+    //    }
+    //    else
+    //    {
+    //        // Not a valid integer, set amount to a safe default.
+    //        amount = 0;
+    //    }
+    //}
+
+    void FillRow(int rowIndex, string value)
+
     {
+
         isUpdatingInputs = true;
+
         for (int c = 0; c < cols; c++)
+
         {
+
             if (string.IsNullOrEmpty(value))
+
                 rowValues[rowIndex, c] = null;
+
             else if (int.TryParse(value, out int amount))
+
                 rowValues[rowIndex, c] = amount;
 
+
+
             UpdateCell(rowIndex, c);
+
         }
+
         isUpdatingInputs = false;
+
     }
 
+
+
     void FillColumn(int colIndex, string value)
+
     {
+
         isUpdatingInputs = true;
+
         for (int r = 0; r < rows; r++)
         {
+
             if (string.IsNullOrEmpty(value))
+
                 colValues[r, colIndex] = null;
+
             else if (int.TryParse(value, out int amount))
+
                 colValues[r, colIndex] = amount;
 
+
+
             UpdateCell(r, colIndex);
+
         }
+
         isUpdatingInputs = false;
+
     }
 
     public void HandleAllToggle()
@@ -485,6 +623,7 @@ public class GridManager : MonoBehaviour
                 foreach (int range in seriesManager.currentRangeSelected)
                 {
                     SaveCurrentGridData(series, range);
+                    Debug.Log("Saving");
                 }
             }
         }
@@ -494,11 +633,16 @@ public class GridManager : MonoBehaviour
     {
         var key = (series, range);
 
+        // ? FIX: Instead of clearing the whole dictionary,
+        // we manage the data for this specific key.
         if (!allGridData.ContainsKey(key))
+        {
             allGridData[key] = new Dictionary<(int, int), string>();
+        }
 
+        // Clear only the specific dictionary for the current series/range
         var gridInputdata = allGridData[key];
-        gridInputdata.Clear();
+      //  gridInputdata.Clear();
 
         for (int row = 0; row < rows; row++)
         {
@@ -512,24 +656,23 @@ public class GridManager : MonoBehaviour
                     if (int.TryParse(text, out int val) && val >= 0 && val <= 999)
                     {
                         gridInputdata[(row, col)] = text;
-                        Debug.Log($"Saved ({series},{range}) at {row},{col} = {text}" + " Number is ");
                         int bettedNum = CalculateNumbers(series, range, row, col);
 
-                        if (!seriesManager.betNumbers.ContainsKey(bettedNum))
+                        if (seriesManager.betNumbers.ContainsKey(bettedNum))
                         {
-                            seriesManager.betNumbers.Add(bettedNum, int.Parse(text));
-                            string dictLog = "Current betNumbers: ";
-                            foreach (var kvp in seriesManager.betNumbers)
-                            {
-                                dictLog += $"[{kvp.Key} : {kvp.Value}] ";
-                            }
-                            Debug.Log(dictLog);
+                            seriesManager.betNumbers[bettedNum] = val;
+                        }
+                        else
+                        {
+                            seriesManager.betNumbers.Add(bettedNum, val);
                         }
                     }
                 }
             }
         }
     }
+
+
 
     public int CalculateNumbers(int series, int range, int row, int col)
     {
@@ -542,11 +685,12 @@ public class GridManager : MonoBehaviour
     public void LoadGridData(int series, int range)
     {
         var key = (series, range);
-
+        Debug.Log("Loading data for : " + "Series : " + series + " Range : " + range);
         if (!allGridData.ContainsKey(key))
         {
             return;
         }
+        Debug.Log("Return for loading grid data not found");
 
         isUpdatingInputs = true;
         for (int row = 0; row < rows; row++)
@@ -559,7 +703,10 @@ public class GridManager : MonoBehaviour
         }
 
         var gridInputsdata = allGridData[key];
-
+        if(gridInputsdata.Keys.Count == 0)
+        {
+            Debug.Log("Grid Input data is null");
+        }
         foreach (var kvp in gridInputsdata)
         {
             int row = kvp.Key.Item1;
@@ -606,10 +753,10 @@ public class GridManager : MonoBehaviour
         ClearMainInputs();
         ClearStoredDataFromDictionary();
         // Assuming GameManager and ToastManager exist
-        GameManager.instance.qntypointsMgr.ClearData(); 
+        GameManager.instance.qntypointsMgr.ClearData();
         ClearBandF();
 
-         SoundManager.Instance.PlaySound(SoundManager.Instance.commonSound);
+        SoundManager.Instance.PlaySound(SoundManager.Instance.commonSound);
     }
 
     public void ClearMainInputs()
@@ -634,7 +781,7 @@ public class GridManager : MonoBehaviour
     {
         allGridData.Clear();
         seriesManager.betNumbers.Clear();
-        // ToastManager.Instance.ShowToast("Cleared");
+         ToastManager.Instance.ShowToast("Cleared");
     }
     public void OnValueAddedInGridInputs()
     {

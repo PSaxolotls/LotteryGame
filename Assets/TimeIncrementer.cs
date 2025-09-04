@@ -23,7 +23,7 @@ public class TimeIncrementer : MonoBehaviour
         // Parse your given string into DateTime
         if (DateTime.TryParse(startTimeString, out currentTime))
         {
-            Debug.Log("? Parsed start time: " + currentTime);
+          //  Debug.Log("? Parsed start time: " + currentTime);
             InvokeRepeating(nameof(IncrementTime), 1f, 1f); // call every 1 second
         }
         else
@@ -40,6 +40,6 @@ public class TimeIncrementer : MonoBehaviour
         if (timeText != null)
             timeText.text = currentTime.ToString("dd-MM-yyyy HH:mm:ss");
 
-        Debug.Log("Updated Time: " + currentTime);
+       // Debug.Log("Updated Time: " + currentTime);
     }
 }

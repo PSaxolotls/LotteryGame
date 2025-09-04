@@ -63,16 +63,33 @@ public class ShowRandomNums : MonoBehaviour
 
     private void UpdateListWithRandom(GameObject[] list, int[] prefixes)
     {
+        // Check if the main list is null first.
+        if (list == null)
+        {
+            Debug.LogError("The GameObject list passed to UpdateListWithRandom is null.");
+            return;
+        }
+
+        // Now, check for the length and prefix array.
+        if (prefixes == null || list.Length != prefixes.Length)
+        {
+            Debug.LogError("Array mismatch in UpdateListWithRandom: `prefixes` is null or lengths are different.");
+            return;
+        }
+
         for (int i = 0; i < list.Length; i++)
         {
-            if (list[i] != null && list[i].transform.GetChild(0).TryGetComponent(out TMPro.TMP_Text tmp))
+            // Check if the current GameObject or its child is null
+            if (list[i] != null && list[i].transform.childCount > 0 && list[i].transform.GetChild(0).TryGetComponent(out TMPro.TMP_Text tmp))
             {
-                // Randomize only last 2 digits
                 int lastTwo = Random.Range(0, 100);
                 string suffix = lastTwo.ToString("00");
 
-                // Use fixed prefix for this element
                 tmp.text = prefixes[i].ToString("00") + suffix;
+            }
+            else
+            {
+                Debug.LogWarning($"Skipping element at index {i} because it or its child TMP_Text component is null.");
             }
         }
     }

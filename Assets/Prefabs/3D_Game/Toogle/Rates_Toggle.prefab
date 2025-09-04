@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3053192956451537332}
   - component: {fileID: 4737162330030932497}
   m_Layer: 5
-  m_Name: All_Toggle
+  m_Name: Rates_Toggle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -86,7 +86,7 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_IsOn: 1
+  m_IsOn: 0
 --- !u!1 &3494756915991605275
 GameObject:
   m_ObjectHideFlags: 0

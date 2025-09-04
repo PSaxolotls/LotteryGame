@@ -85,7 +85,7 @@ public class FamilyManager : MonoBehaviour
                 }
             }
         }
-      StartCoroutine(mgr.DelayCall(number));
+    //  StartCoroutine(mgr.DelayCall(number));
     }
 
 

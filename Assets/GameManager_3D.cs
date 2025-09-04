@@ -7,10 +7,10 @@ using UnityEngine;
 using UnityEngine.Networking;
 using SFB;
 using UnityEngine.SceneManagement;
-public class GameManager : MonoBehaviour
+public class GameManager_3D : MonoBehaviour
 {
     [DllImport("user32.dll")]
-    private static extern bool  ShowWindow(System.IntPtr hWnd, int nCmdShow);
+    private static extern bool ShowWindow(System.IntPtr hWnd, int nCmdShow);
 
     [DllImport("user32.dll")]
     private static extern System.IntPtr GetActiveWindow();
@@ -18,9 +18,8 @@ public class GameManager : MonoBehaviour
     const int SW_MINIMIZE = 6;
 
 
-    public static GameManager instance;
-    public SeriesManager seriesMgr;
-    public GridManager gridMgr;
+    public static GameManager_3D instance;
+  
     public QuantityPointsManager qntypointsMgr;
     public TimeIncrementer incrementer;
 
@@ -50,17 +49,17 @@ public class GameManager : MonoBehaviour
         StartCoroutine(FetchUserData());
         StartCoroutine(FetchResultsOnStart());
         GetTimer();
-       
-        ToastManager.Instance.transform.SetParent(canvas.transform);
+
+       // ToastManager.Instance.transform.SetParent(canvas.transform);
     }
 
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.F2))
         {
-            seriesMgr.ClearAllSeriesAndRange();
-            gridMgr.ClearAll();
+            //seriesMgr.ClearAllSeriesAndRange();
+            //gridMgr.ClearAll();
             qntypointsMgr.ClearData();
         }
     }
@@ -178,7 +177,6 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-        gridMgr.ClearAll();
     }
 
     public IEnumerator FetchResultsOnStart()
@@ -215,74 +213,58 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void BuyBtn()
-    {
-        SoundManager.Instance.PlaySound(SoundManager.Instance.commonSound);
+    //public void BuyBtn()
+    //{
+    //    SoundManager.Instance.PlaySound(SoundManager.Instance.commonSound);
 
-        foreach (int series in seriesMgr.currentSeriesSelected)
-        {
-            foreach (int range in seriesMgr.currentRangeSelected)
-            {
-                gridMgr.SaveCurrentGridData(series, range);
-            }
-        }
-        StartCoroutine(SubmitDictionary(seriesMgr.betNumbers, PlayerPrefs.GetInt("UserId"), int.Parse(qntypointsMgr.PointsTotalTxt.text), ""));
-    }
-    private Coroutine timerCoroutine;
+    //    foreach (int series in seriesMgr.currentSeriesSelected)
+    //    {
+    //        foreach (int range in seriesMgr.currentRangeSelected)
+    //        {
+    //            gridMgr.SaveCurrentGridData(series, range);
+    //        }
+    //    }
+    //    StartCoroutine(SubmitDictionary(seriesMgr.betNumbers, PlayerPrefs.GetInt("UserId"), int.Parse(qntypointsMgr.PointsTotalTxt.text), ""));
+    //}
+
     public void GetTimer()
     {
-        // Stop any previously running timer coroutine
-        if (timerCoroutine != null)
-        {
-            StopCoroutine(timerCoroutine);
-        }
-        // Start the new coroutine and store its reference
-        timerCoroutine = StartCoroutine(FetchTimers());
+        StartCoroutine(FetchTimers());
     }
 
     private IEnumerator FetchTimers()
     {
-        int maxRetries = 5; // Set a maximum number of retries
-        int retries = 0;
+        WWWForm form = new WWWForm();
+        form.AddField("id", PlayerPrefs.GetInt("UserId"));
 
-        // Outer loop to retry the request
-        while (retries < maxRetries)
+        using (UnityWebRequest www = UnityWebRequest.Post(GameAPIs.getTimerAPi, form))
         {
-            WWWForm form = new WWWForm();
-            form.AddField("id", PlayerPrefs.GetInt("UserId"));
+            yield return www.SendWebRequest();
 
-            using (UnityWebRequest www = UnityWebRequest.Post(GameAPIs.getTimerAPi, form))
+            if (www.result != UnityWebRequest.Result.Success)
             {
-                yield return www.SendWebRequest();
+                Debug.LogError("Error fetching timer: " + www.error);
+            }
+            else
+            {
+                Debug.Log("Timer Response: " + www.downloadHandler.text);
 
-                if (www.result == UnityWebRequest.Result.Success)
+                TimerData timerData = JsonUtility.FromJson<TimerData>(www.downloadHandler.text);
+
+                if (timerData != null && timerData.status == "success")
                 {
-                    Debug.Log("Timer Response: " + www.downloadHandler.text);
+                    string[] parts = timerData.time_remaining.Split(':');
 
-                    TimerData timerData = JsonUtility.FromJson<TimerData>(www.downloadHandler.text);
-
-                    if (timerData != null && timerData.status == "success")
+                    if (parts.Length == 2)
                     {
-                        string[] parts = timerData.time_remaining.Split(':');
-                        if (parts.Length == 2)
-                        {
-                            int minutes = int.Parse(parts[0]);
-                            int seconds = int.Parse(parts[1]);
-                            timerCoroutine = StartCoroutine(RunTimer(minutes, seconds));
-                            yield break; // Exit the coroutine on success
-                        }
+                        int minutes = int.Parse(parts[0]);
+                        int seconds = int.Parse(parts[1]);
+
+                        StartCoroutine(RunTimer(minutes, seconds));
                     }
                 }
-                else
-                {
-                    Debug.LogError($"Error fetching timer (Attempt {retries + 1}/{maxRetries}): " + www.error);
-                }
             }
-            retries++;
-            yield return new WaitForSeconds(1f); // Wait before retrying
         }
-
-        Debug.LogError("Failed to fetch timer after multiple attempts.");
     }
 
     private IEnumerator RunTimer(int minutes, int seconds)
@@ -394,7 +376,7 @@ public class GameManager : MonoBehaviour
                 Debug.Log("Wallet Balance: " + response.wallet);
                 Debug.Log("PDF URL: " + response.pdf_url);
 
-                gridMgr.ClearAll();
+               // gridMgr.ClearAll();
                 StartCoroutine(DownloadPDF(response.pdf_url));
             }
         }
@@ -403,7 +385,7 @@ public class GameManager : MonoBehaviour
             ToastManager.Instance.ShowToast("Unexpected Error Occured");
             Debug.LogError("Error: " + www.error);
             loadingObj.SetActive(false);
-            gridMgr.ClearAll();
+          //  gridMgr.ClearAll();
         }
     }
     public IEnumerator DownloadPDF(string pdfUrl)
@@ -447,115 +429,7 @@ public class GameManager : MonoBehaviour
     {
 
     }
-
-
-    [System.Serializable]
-    public class BetPayload<TKey, TValue>
-    {
-        public int userid;
-        public int points;
-        public string draw_time;
-
-        public List<Entry<TKey, TValue>> items = new List<Entry<TKey, TValue>>();
-
-        public BetPayload(int userId, Dictionary<TKey, TValue> dict, int points, string draw_time)
-        {
-            this.userid = userId;
-            this.points = points;
-            this.draw_time = draw_time;
-            foreach (var kv in dict)
-            {
-                items.Add(new Entry<TKey, TValue> { key = kv.Key, value = kv.Value });
-            }
-        }
-    }
-
-    [System.Serializable]
-    public class Entry<TKey, TValue>
-    {
-        public TKey key;
-        public TValue value;
-    }
-
-
-}
-// Unity's JsonUtility does not serialize Dictionary directly, so we wrap it
-[System.Serializable]
-public class Wrapper<TKey, TValue>
-{
-    public List<Entry<TKey, TValue>> items = new List<Entry<TKey, TValue>>();
-
-    public Wrapper(Dictionary<TKey, TValue> dict)
-    {
-        foreach (var kv in dict)
-        {
-            items.Add(new Entry<TKey, TValue> { key = kv.Key, value = kv.Value });
-        }
-    }
-}
-[System.Serializable]
-public class Entry<TKey, TValue>
-{
-    public TKey key;
-    public TValue value;
-}
-[System.Serializable]
-public class BetPayload<TKey, TValue>
-{
-    public int userId;
-    public int totalPoints;
-    public string draw_time;
-    public List<Entry<TKey, TValue>> items = new List<Entry<TKey, TValue>>();
-
-    public BetPayload(int userId, Dictionary<TKey, TValue> dict, int totalPoints, string draw_time)
-    {
-        this.userId = userId;
-        this.totalPoints = totalPoints;
-        this.draw_time = draw_time;
-        foreach (var kv in dict)
-        {
-            items.Add(new Entry<TKey, TValue> { key = kv.Key, value = kv.Value });
-        }
-    }
-}
-[System.Serializable]
-public class UserDataResponse
-{
-    public string status;
-    public string limit;
-    public string last_trn;
-    public string tran_pt;
-    public string datetime;
-    public string current_slot;
-}
-
-[System.Serializable]
-public class NumberData
-{
-    public string number;
-}
-
-[System.Serializable]
-public class ResultsResponse
-{
-    public string status;
-    public List<NumberData> data;
-}
-
-[System.Serializable]
-public class TimerData
-{
-    public string status;
-    public string time_remaining;
 }
 
 
-[System.Serializable]
-public class SubmitResponse
-{
-    public string status;
-    public string message;
-    public int wallet;
-    public string pdf_url;
-}
 

@@ -103,6 +103,49 @@ public class SeriesManager : MonoBehaviour
         OnRangeSelected(0);
     }
 
+    private void Update()
+    {
+        // Check for keyboard input to toggle ranges
+        if (Input.GetKeyDown(KeyCode.PageDown))
+        {
+            //// Move to the next index, wrapping around if necessary
+            currentRangeIndx++;
+            if (currentRangeIndx >= rangeGroups.Count - 1)
+            {
+                currentRangeIndx = 0;
+            }
+            OnRangeBtnSelected(rangeGroups[currentRangeIndx].rangeValue);
+        }
+        else if (Input.GetKeyDown(KeyCode.PageUp))
+        {
+            // Move to the previous index, wrapping around if necessary
+            currentRangeIndx--;
+            if (currentRangeIndx < 0)
+            {
+                currentRangeIndx = rangeGroups.Count - 1;
+            }
+            OnRangeBtnSelected(rangeGroups[currentRangeIndx].rangeValue);
+        }
+    }
+
+    private void ToggleRangeButton(int index)
+    {
+        if (index >= 0 && index < RangeGrp.Length)
+        {
+            // Get the Toggle component from the GameObject at the given index
+            var toggleComponent = rangeGroups[index].toggle;
+
+            if (toggleComponent != null)
+            {
+                // Set the toggle to be "on"
+                toggleComponent.isOn = true;
+
+                // ? Call the OnRangeBtnSelected function with the correct range index
+                OnRangeBtnSelected(index);
+            }
+        }
+    }
+
     private void SetSeries(int seriesBase)
     {
         currentSeriesBase = seriesBase;
@@ -171,9 +214,11 @@ public class SeriesManager : MonoBehaviour
     }
 
 
+
     void OnSeriesDeselected(int seriesBase)
     {
         currentSeriesSelected.Remove(seriesBase);
+        Debug.Log("series removed for " + seriesBase);
 
     }
 
@@ -382,8 +427,10 @@ public class SeriesManager : MonoBehaviour
                 rangeGroups[i].toggle.isOn = false;
             }
         }
-
-        currentSeriesSelected.Add(10);
+        if (!currentSeriesSelected.Contains(10))
+        {
+            currentSeriesSelected.Add(10);
+        }
         seriesToggles[0].isOn = true;
         rangeGroups[0].toggle.isOn = true;
     }
